@@ -8,7 +8,7 @@ using VLB;
 namespace Oxide.Plugins
 {
 
-	[Info("HealGun", "Wolfleader101", "1.2.2")]
+	[Info("HealGun", "Wolfleader101", "1.3.0")]
 	class HealGun : RustPlugin
 	{
 		#region Variables
@@ -37,8 +37,11 @@ namespace Oxide.Plugins
 			
 			info.damageTypes.ScaleAll(0); // disable damage
 			var player = info.HitEntity as BasePlayer;
+			
 			player.Heal(config.HealAmount);
+			player.metabolism.pending_health.value += config.PendingHealAmount;
 			info.ProjectilePrefab.conditionLoss += 1f;
+			
 
 
 		}
@@ -55,6 +58,8 @@ namespace Oxide.Plugins
 		{
 			[JsonProperty("Healgun")] public string Healgun { get; set; }
 			[JsonProperty("Heal Amount")] public float HealAmount { get; set; }
+			
+			[JsonProperty("Pending Health Amount")] public float PendingHealAmount { get; set; }
 		}
 
 		private PluginConfig GetDefaultConfig()
@@ -62,7 +67,8 @@ namespace Oxide.Plugins
 			return new PluginConfig
 			{
 				Healgun = "nailgun.entity",
-				HealAmount = 10f
+				HealAmount = 5f,
+				PendingHealAmount  = 10f
 			};
 		}
 
