@@ -8,7 +8,7 @@ using VLB;
 namespace Oxide.Plugins
 {
 
-	[Info("HealGun", "Wolfleader101", "1.2.0")]
+	[Info("HealGun", "Wolfleader101", "1.2.2")]
 	class HealGun : RustPlugin
 	{
 		#region Variables
@@ -38,7 +38,7 @@ namespace Oxide.Plugins
 			info.damageTypes.ScaleAll(0); // disable damage
 			var player = info.HitEntity as BasePlayer;
 			player.Heal(config.HealAmount);
-
+			info.ProjectilePrefab.conditionLoss += 1f;
 
 
 		}
