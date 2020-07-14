@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using ConVar;
 using Newtonsoft.Json;
 using Oxide.Core;
+using UnityEngine;
 using VLB;
 
 namespace Oxide.Plugins
 {
 
-	[Info("HealGun", "Wolfleader101", "1.3.0")]
+	[Info("HealGun", "Wolfleader101", "1.3.5")]
 	class HealGun : RustPlugin
 	{
 		#region Variables
@@ -37,19 +40,27 @@ namespace Oxide.Plugins
 			
 			info.damageTypes.ScaleAll(0); // disable damage
 			var player = info.HitEntity as BasePlayer;
-			
+
+			if (player.IsWounded() && config.CanRevive)
+			{
+				ServerMgr.Instance.StartCoroutine(WoundTimer(player));
+			}
 			player.Heal(config.HealAmount);
 			player.metabolism.pending_health.value += config.PendingHealAmount;
-			info.ProjectilePrefab.conditionLoss += 1f;
 			
-
+			info.ProjectilePrefab.remainInWorld = false;
 
 		}
 		#endregion
 
 		#region Custom Methods
 
-		
+		IEnumerator WoundTimer(BasePlayer player)
+		{
+			yield return new WaitForSeconds(config.ReviveTime);
+			player.StopWounded();
+
+		}
 
 		#endregion
 
@@ -58,8 +69,9 @@ namespace Oxide.Plugins
 		{
 			[JsonProperty("Healgun")] public string Healgun { get; set; }
 			[JsonProperty("Heal Amount")] public float HealAmount { get; set; }
-			
 			[JsonProperty("Pending Health Amount")] public float PendingHealAmount { get; set; }
+			[JsonProperty("Can Revive")] public bool CanRevive { get; set; }
+			[JsonProperty("Revive Time")] public float ReviveTime { get; set; }
 		}
 
 		private PluginConfig GetDefaultConfig()
@@ -68,7 +80,9 @@ namespace Oxide.Plugins
 			{
 				Healgun = "nailgun.entity",
 				HealAmount = 5f,
-				PendingHealAmount  = 10f
+				PendingHealAmount  = 10f,
+				CanRevive = true,
+				ReviveTime = 3f
 			};
 		}
 
