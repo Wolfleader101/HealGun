@@ -11,7 +11,8 @@ using VLB;
 namespace Oxide.Plugins
 {
 
-	[Info("HealGun", "Wolfleader101", "1.3.5")]
+	[Info("HealGun", "Wolfleader101", "1.3.6")]
+	[Description("a customisable healgun for rust")]
 	class HealGun : RustPlugin
 	{
 		#region Variables
