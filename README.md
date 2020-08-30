@@ -13,6 +13,10 @@ The plugins config is made simple and customizable
 `Revive Time` -- seconds it takes for player to be revived
 
 **This is the weapons name and not the projectile E.G** `nailgun.entity`
+A List of prefab names can be found here, make sure you **DON'T** include the `.prefab` at the end.
+https://www.corrosionhour.com/rust-prefab-list/
+
+Feel free to DM me on discord `WOLFLEADER#0999` if you have any issues
 
 ```json
 {
@@ -23,4 +27,3 @@ The plugins config is made simple and customizable
   "Revive Time": 3.0
 }
 ```
-
